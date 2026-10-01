@@ -11,6 +11,44 @@ function handleProductImageError(img, placeholderClass) {
     img.replaceWith(placeholder);
 }
 
+// Contact form: submits to Netlify Forms (works once the site is deployed on
+// Netlify with the matching hidden "form-name" field above — see contact.html).
+// Harmless no-op locally / on any other host; nothing breaks either way.
+const contactForm = document.getElementById("contactForm");
+
+if (contactForm) {
+    const encodeFormData = (data) =>
+        Object.keys(data)
+            .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+            .join("&");
+
+    contactForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const status = document.getElementById("contactFormStatus");
+        const data = Object.fromEntries(new FormData(contactForm).entries());
+
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: encodeFormData(data),
+        })
+            .then(() => {
+                contactForm.reset();
+                contactForm.hidden = true;
+                if (status) {
+                    status.hidden = false;
+                    status.textContent = "Thanks! Your message has been sent — we'll get back to you soon.";
+                }
+            })
+            .catch(() => {
+                if (status) {
+                    status.hidden = false;
+                    status.textContent = "Something went wrong sending your message. Please try WhatsApp or email us directly.";
+                }
+            });
+    });
+}
+
 const heroSlides = document.querySelectorAll(".hero-slide");
 const heroDots = document.querySelectorAll(".slider-dots .dot");
 

@@ -1926,6 +1926,16 @@ nav a.active {
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
+.contact-form-status {
+    margin: 0;
+    padding: 16px 20px;
+    border-radius: 8px;
+    background-color: #eef6e4;
+    color: #3d6b1f;
+    font-size: 15px;
+    font-weight: 600;
+}
+
 /* =========================
    SCROLL REVEAL ANIMATION
 ========================= */
